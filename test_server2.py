@@ -2,12 +2,17 @@ import socket
 import os
 import threading
 
-def connectionHandler(addr, conn):
+def connectionHandler(addr, conn, all_conn):
     print('Connected by:', addr)
     while True:
         try:
             data = conn.recv(1024)
             print(addr, ':', data.decode())
+            for each_conn in all_conn:
+                try:
+                    each_conn.sendall(data)
+                except:
+                    pass
         except ConnectionResetError:
             print(addr, 'disconnected')
             break
@@ -74,7 +79,8 @@ if __name__ == '__main__':
     while True:
         try:
             conn, addr = server.accept()
-            threading.Thread(target=connectionHandler, args=(addr[0], conn,)).start()
+            connList.append(conn)
+            threading.Thread(target=connectionHandler, args=(addr[0], conn, connList)).start()
         except Exception as err:
             server.close()
             raise(err)
