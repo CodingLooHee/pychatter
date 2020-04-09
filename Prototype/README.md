@@ -1,18 +1,15 @@
 # I use this folder for prototyping purpose
 This folder is created for prototyping how server and client work but you can also use it for basic socket example.
 
+## BASIC  
 
+test_server.py <-- Server  
 
-BASIC
+test_client.py <-- Client  
 
-test_server.py   <-- Server
+## ADVANCED
+### (Not that advance lol)  
 
-test_client.py   <-- Client
+test_server2.py <-- Server  
 
-
-
-ADVANCED (Not that advance lol)
-
-test_server2.py  <-- Server
-
-test_client2.py  <-- Client
+test_client2.py <-- Client  
