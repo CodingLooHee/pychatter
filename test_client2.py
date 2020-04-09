@@ -1,6 +1,6 @@
 import socket
 import msvcrt
-import threading
+from threading import Thread
 from time import sleep
 
 
@@ -89,9 +89,9 @@ if __name__ == '__main__':
     isNeedReprint = SharedData(False)
 
 
-    threading.Thread(target=keyChecker, args=(keyStroke,)).start()
-    threading.Thread(target=connHandler, args=(client, sharedRecv,)).start()
-    threading.Thread(target=enterHandler, args=(keyStroke, client, pendingText, isNeedReprint)).start()
+    Thread(target=keyChecker, args=(keyStroke,)).start()
+    Thread(target=connHandler, args=(client, sharedRecv,)).start()
+    Thread(target=enterHandler, args=(keyStroke, client, pendingText, isNeedReprint)).start()
 
 
     while True:

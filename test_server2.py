@@ -1,6 +1,6 @@
 import socket
-import os
-import threading
+from os import system
+from threading import Thread
 
 def connectionHandler(addr, conn, all_conn):
     print('Connected by: ' + f'{addr[0]}: {addr[1]}')
@@ -60,15 +60,11 @@ if __name__ == '__main__':
 
 
 
-    os.system('cls')
+    system('cls')
     print('------- Server Info -------')
     print(f'Address:    {HOST}\n' +\
           f'Port:       {PORT}\n' +\
           '---------------------------\n')
-
-
-
-
 
 
 
@@ -80,7 +76,7 @@ if __name__ == '__main__':
         try:
             conn, addr = server.accept()
             connList.append(conn)
-            threading.Thread(target=connectionHandler, args=(addr, conn, connList)).start()
+            Thread(target=connectionHandler, args=(addr, conn, connList)).start()
         except Exception as err:
             server.close()
             raise(err)
