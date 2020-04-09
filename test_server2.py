@@ -58,7 +58,7 @@ if __name__ == '__main__':
     os.system('cls')
     print('------- Server Info -------')
     print(f'Address:    {HOST}\n' +\
-          f'Port:       {PORT}' +\
+          f'Port:       {PORT}\n' +\
           '---------------------------\n')
 
 
