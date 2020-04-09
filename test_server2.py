@@ -1,5 +1,6 @@
 import socket
 import os
+import threading
 
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -47,6 +48,26 @@ print(f'Address:    {HOST}\n' +\
       f'Port:       {PORT}')
 
 
+def connectionHandler(conn):
+    while True:
+        try:
+            data = conn.recv(1024)
+            print(data)
+        except ConnectionResetError:
+            print('Connection from', conn, 'reseted')
+            break
+
+
+
+
+server.listen()
+
+connList = []
+
+while True:
+    conn, addr = server.accept()
+    print('Connected by:', addr)
+    threading.Thread(target=connectionHandler, args=(conn,)).start()
 
 
 
