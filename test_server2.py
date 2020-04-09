@@ -3,16 +3,16 @@ import os
 import threading
 
 def connectionHandler(addr, conn):
-    print('Connected by:', addr[0])
+    print('Connected by:', addr)
     while True:
         try:
             data = conn.recv(1024)
-            print(addr[0], ':', data.decode())
+            print(addr, ':', data.decode())
         except ConnectionResetError:
-            print(addr[0], 'disconnected')
+            print(addr, 'disconnected')
             break
         except Exception as err:
-            print(addr[0], err)
+            print(addr, err)
             break
 
 if __name__ == '__main__':
@@ -74,7 +74,7 @@ if __name__ == '__main__':
     while True:
         try:
             conn, addr = server.accept()
-            threading.Thread(target=connectionHandler, args=(addr, conn,)).start()
+            threading.Thread(target=connectionHandler, args=(addr[0], conn,)).start()
         except Exception as err:
             server.close()
             raise(err)
