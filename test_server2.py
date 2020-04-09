@@ -3,21 +3,21 @@ import os
 import threading
 
 def connectionHandler(addr, conn, all_conn):
-    print('Connected by:', addr)
+    print('Connected by: ' + f'{addr[0]}: {addr[1]}')
     while True:
         try:
-            data = conn.recv(1024)
-            print(addr, ':', data.decode())
+            data = conn.recv(1024).decode()
+            print(f'<{addr[0]}| {addr[1]}> : ' + data)
             for each_conn in all_conn:
                 try:
-                    each_conn.sendall(data)
+                    each_conn.sendall((f'<{addr[0]}| {addr[1]}> : ' + data).encode())
                 except:
                     pass
         except ConnectionResetError:
-            print(addr, 'disconnected')
+            print(f'{addr[0]}: {addr[1]}' + ' disconnected')
             break
         except Exception as err:
-            print(addr, err)
+            print(addr[0], err)
             break
 
 if __name__ == '__main__':
@@ -80,7 +80,7 @@ if __name__ == '__main__':
         try:
             conn, addr = server.accept()
             connList.append(conn)
-            threading.Thread(target=connectionHandler, args=(addr[0], conn, connList)).start()
+            threading.Thread(target=connectionHandler, args=(addr, conn, connList)).start()
         except Exception as err:
             server.close()
             raise(err)

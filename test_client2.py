@@ -85,7 +85,7 @@ if __name__ == '__main__':
 
     while True:
         if (received := sharedRecv.getData()) != '':
-            print('\r' + received + ' '*100)
+            print('\r' + received + ' '*80)
             sharedRecv.setData('')
         print('\rEnter: ' + pendingText.getData(), end='')
 
