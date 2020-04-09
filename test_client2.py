@@ -1,6 +1,7 @@
 import socket
 import msvcrt
 import threading
+from time import sleep
 
 
 class SharedData:
@@ -22,19 +23,27 @@ def connHandler(conn, sharedRecv):
         sharedRecv.setData(conn.recv(1024).decode())
 
 
-def enterHandler(keyStroke, conn, pendingText):
+def enterHandler(keyStroke, conn, pendingText, needReprint):
+    newlined = True
     while True:
         if (keypressed := keyStroke.getData()) != b'':
             if keypressed == b'\x08':   # Backspace
                 pendingText.setData(pendingText.getData()[:-1])
-            elif keypressed == b'\r':
+                needReprint.setData(True)
+            elif keypressed == b'\r':   # Enter
                 conn.sendall(pendingText.getData().encode())
                 pendingText.setData('')
-            elif keypressed == b'\n':
+                newlined = True
+            elif keypressed == b'\n':   # Enter after '\r' but ignored
                 pass
             else:
-                pendingText.setData(pendingText.getData() + keypressed.decode())
+                if len(pendingText.getData()) <= 70:    # Limit message
+                    pendingText.setData(pendingText.getData() + keypressed.decode())
             keyStroke.setData(b'')
+        if pendingText.getData() == '' and newlined == True:    # Prevent oldline overwritten
+            needReprint.setData(True)
+            newlined = False
+
 
 
 
@@ -77,16 +86,21 @@ if __name__ == '__main__':
     keyStroke = SharedData(b'')
     sharedRecv = SharedData('')
     pendingText = SharedData('')
+    isNeedReprint = SharedData(False)
+
 
     threading.Thread(target=keyChecker, args=(keyStroke,)).start()
     threading.Thread(target=connHandler, args=(client, sharedRecv,)).start()
-    threading.Thread(target=enterHandler, args=(keyStroke, client, pendingText)).start()
+    threading.Thread(target=enterHandler, args=(keyStroke, client, pendingText, isNeedReprint)).start()
 
 
     while True:
         if (received := sharedRecv.getData()) != '':
-            print('\r' + received + ' '*80)
+            print('\r' + received + ' '*80 + '\n', end='')
             sharedRecv.setData('')
+        if isNeedReprint.getData(): # Prevent lag
+            print('\r' + ' '*80, end='')
+            isNeedReprint.setData(False)
         print('\rEnter: ' + pendingText.getData(), end='')
 
 
