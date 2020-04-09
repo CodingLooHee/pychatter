@@ -48,13 +48,13 @@ print(f'Address:    {HOST}\n' +\
       f'Port:       {PORT}')
 
 
-def connectionHandler(conn):
+def connectionHandler(addr, conn):
     while True:
         try:
             data = conn.recv(1024)
-            print(data)
+            print(addr, ':', data)
         except ConnectionResetError:
-            print('Connection from', conn, 'reseted')
+            print('Connection from', addr, 'disconnected')
             break
 
 
@@ -67,7 +67,7 @@ connList = []
 while True:
     conn, addr = server.accept()
     print('Connected by:', addr)
-    threading.Thread(target=connectionHandler, args=(conn,)).start()
+    threading.Thread(target=connectionHandler, args=(addr, conn,)).start()
 
 
 
