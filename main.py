@@ -1,7 +1,2 @@
-import time
-print("Hello world")
+import socket
 
-i = 0
-while True:
-    print(i)
-    i += 1
