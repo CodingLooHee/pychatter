@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
         try:
             if HOST == '':
-                    HOST = '127.0.0.1'
+                HOST = '127.0.0.1'
             if PORT == '':
                 PORT = 12345
             
