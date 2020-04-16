@@ -17,8 +17,7 @@ def connectionHandler(addr, conn, all_conn):
             print(f'{addr[0]}: {addr[1]}' + ' disconnected')
             break
         except Exception as err:
-            print(addr[0], err)
-            break
+            raise(err)
 
 if __name__ == '__main__':
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
