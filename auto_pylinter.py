@@ -10,4 +10,4 @@ while True:
         for name in files:
             if fnmatch(name, '*.py'):
                 print(f'Checking {name}...')
-                lint.py_run(name)
+                lint.py_run(os.path.join(path, name))
