@@ -11,4 +11,3 @@ while True:
             if fnmatch(name, '*.py'):
                 print(f'Checking {name}...')
                 lint.py_run(name)
-    input()
