@@ -28,7 +28,3 @@ jobs:
       run: |
         python -m pip install pylint
         python auto_pylinter.py
-    - name: Test with pytest
-      run: |
-        pip install pytest
-        pytest
