@@ -5,9 +5,8 @@ import os
 from fnmatch import fnmatch
 from pylint import epylint as lint
 
-while True:
-    for path, subdir, files in os.walk('.\\'):
-        for name in files:
-            if fnmatch(name, '*.py'):
-                print(f'Checking {name}...')
-                lint.py_run(os.path.join(path, name))
+for path, subdir, files in os.walk('.\\'):
+    for name in files:
+        if fnmatch(name, '*.py'):
+            print(f'Checking {name}...')
+            lint.py_run(os.path.join(path, name))
